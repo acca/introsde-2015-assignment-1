@@ -152,7 +152,7 @@
 
 	<target name="execute.JAXBMarshaller">
 		<echo message="Executing JAXBMarshaller" />
-		<java classname="bookstore.JAXBMarshaller" classpath="${build.dir}">
+		<java classname="people.JAXBMarshaller" classpath="${build.dir}">
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar" />
@@ -164,7 +164,7 @@
 
 	<target name="execute.JAXBUnMarshaller">
 		<echo message="Executing JAXBUnMarshaller" />
-		<java classname="bookstore.JAXBUnMarshaller" classpath="${build.dir}">
+		<java classname="people.JAXBUnMarshaller" classpath="${build.dir}">
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar" />
@@ -197,4 +197,54 @@
 			</classpath>
 		</java>
 	</target>
+	
+	<target name="execute.JSONMarshaller">
+			<echo message="Executing JSONMarshaller" />
+			<java classname="people.JSONMarshaller" classpath="${build.dir}">
+				<classpath>
+					<fileset dir="${lib.dir}">
+						<include name="**/*.jar" />
+						<include name="*.jar" />
+					</fileset>
+				</classpath>
+			</java>
+	</target>
+	
+	<target name="execute.evaluate" depends="init, generate, execute.eval1, execute.eval2, execute.eval3, execute.JAXBMarshaller, execute.JAXBUnMarshaller, execute.JSONMarshaller">
+			<echo message="Compile target has been called" />
+			<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="lib.path.id" includeAntRuntime="false">
+			</javac>
+			<copy todir="${build.dir}" overwrite="true">
+				<fileset dir="${src.dir}">
+					<include name="*.xml" />
+				</fileset>
+			</copy>
+	</target>
+	
+	<target name="execute.eval1">
+	        <echo message="Execute evalutation 1"/>
+	        <javac srcdir="src" destdir="build" />
+	        <java classname="HealthProfileReader" classpath="build">
+	        	<arg value="getAllPerson"/>
+	        </java>
+	    </target>
+	
+	<target name="execute.eval2">
+		        <echo message="Execute evalutation 2"/>
+		        <javac srcdir="src" destdir="build" />
+		        <java classname="HealthProfileReader" classpath="build">
+		        	<arg value="getPersonObjectById"/>
+		        	<arg value="0002"/>
+		        </java>
+		    </target>	
+	
+	<target name="execute.eval3">
+		        <echo message="Execute evalutation 3"/>
+		        <javac srcdir="src" destdir="build" />
+		        <java classname="HealthProfileReader" classpath="build">
+		        	<arg value="getPersonWithWeight"/>
+		        	<arg value=">"/>
+		            <arg value="85"/>
+		        </java>
+		    </target>
 </project>

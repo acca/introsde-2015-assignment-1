@@ -29,14 +29,6 @@ public class HealthProfileReader {
 	public static Map<Long, Person> database = new HashMap<Long, Person>(); //
 
 	static {
-//		Person pallino = new Person();
-//		Person pallo = new Person(new Long(1), "Pinco", "Pallo", "1984-06-21");
-//		HealthProfile hp = new HealthProfile(68.0, 1.72);
-//		Person john = new Person(new Long(2), "John", "Doe", "1985-03-20", hp);
-//
-//		database.put(pallino.getPersonId(), pallino);
-//		database.put(pallo.getPersonId(), pallo);
-//		database.put(john.getPersonId(), john);
 	}
 
 	public void loadXML() throws ParserConfigurationException, SAXException, IOException {
@@ -61,7 +53,6 @@ public class HealthProfileReader {
     	String expression = "/people/person[firstname='" + firstName + "' and lastname='" + lastName + "']";
     	System.out.println("Using expression: " + expression);
         XPathExpression expr = xpath.compile(expression);
-  //      XPathExpression expr = xpath.compile("/people/");
         Node node = (Node) expr.evaluate(doc, XPathConstants.NODE);        
         return node;
     }
@@ -132,9 +123,9 @@ public class HealthProfileReader {
         }        
 	}
 	
-	public Person getPersonObjectById(Long personId) throws XPathExpressionException {
-		String personIdString = String.format("%04d", personId);
-		String expression = "/people/person[@id='" + personIdString + "']";
+	public Person getPersonObjectById(String personId) throws XPathExpressionException {
+		//String personIdString = String.format("%04d", personId);
+		String expression = "/people/person[@id='" + personId + "']";
     	System.out.println("Using expression: " + expression);
         XPathExpression expr = xpath.compile(expression);
         Node node = (Node) expr.evaluate(doc, XPathConstants.NODE);        
@@ -159,6 +150,12 @@ public class HealthProfileReader {
 				if (item.getNodeName() == "firstname"){
 					myPerson.setFirstname(item.getFirstChild().getTextContent());				
 				}
+//				if (item.getNodeName() == "id"){
+//					//String personIdString = String.format("%04d", personId);
+//					String idS = item.getFirstChild().getTextContent();
+//					Long idL = Long.valueOf(idS);
+//					myPerson.setPersonId(idL);
+//				}
 				if (item.getNodeName() == "lastname"){
 					myPerson.setLastname(item.getFirstChild().getTextContent());
 				}
@@ -217,14 +214,13 @@ public class HealthProfileReader {
 		/* Solution to Exercise #01-2e */
 		int argCount = args.length;
 		if (argCount == 0) {
-			System.out
-					.println("I cannot create people out of thing air. Give me at least a name and lastname.");
+			System.out.println("I cannot create people out of thing air. Give me at least a name and lastname.");
 		} else if (argCount < 2) {
 			String method = args[0];
-			if (method.equals("getAllPersons")) {
+			if (method.equals("getAllPerson")) {
 					NodeList nodes = test.getAllPerson();				
-					test.printNodes(nodes);
-			}
+					test.printNodes(nodes);						
+			}	
 			else {
 				System.out.println("Are you sure you gave me ALL the information I need?");
 			}
@@ -232,14 +228,19 @@ public class HealthProfileReader {
 			String method = args[0];
 			if (method.equals("createNewPerson")) {
 				System.out.println("Not yet implemented");
-//				Long personId = Long.parseLong(args[1]);
-//				String firstname = args[2];
-//				String lastname = args[3];
-//				String birthdate = args[4];
-//				test.createPerson(personId, firstname, lastname, birthdate);
+			}
+			else if (method.equals("getPersonObjectById")) {
+				Person person = test.getPersonObjectById(args[1]);
+				if (person == null) System.out.println("Person not found");
+				System.out.println("Printing person object:");
+				System.out.println(person.getFirstname());
+				System.out.println(person.getLastname());
+				//System.out.println(person.getPersonId());
+				System.out.println(person.getBirthdate());				
+				System.out.println(person.gethProfile());
 			} else if (method.equals("displayHealthProfile")) {
-				Long personId = Long.parseLong(args[1]);
-				test.displayHealthProfile(personId);				
+				//Long personId = Long.parseLong(args[1]);
+				test.displayHealthProfile(args[1]);				
 			} else if (method.equals("updateHealthProfile")) {
 				Long personId = Long.parseLong(args[1]);
 				Double height = Double.parseDouble(args[2]);
@@ -247,7 +248,7 @@ public class HealthProfileReader {
 				test.updateHealthProfile(personId, height, weight);
 			} else if (method.equals("getPersonByFullName")) {
 				Node node = test.getPersonByFullName(args[1], args[2]);
-				System.out.println(node.getTextContent());
+				System.out.println(node.getTextContent());			
 			} else if (method.equals("getPersonObjectByFullName")) {
 				Person person = test.getPersonObjectByFullName(args[1], args[2]);
 				if (person == null) System.out.println("Person not found");
@@ -286,7 +287,7 @@ public class HealthProfileReader {
 		}
 	}
 
-	public HealthProfile displayHealthProfile(Long personId) throws XPathExpressionException {
+	public HealthProfile displayHealthProfile(String personId) throws XPathExpressionException {		
 		Person p = getPersonObjectById(personId);
 		HealthProfile hp = p.gethProfile();
 		System.out.println(p.getFirstname() + " has a weight of "

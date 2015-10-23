@@ -20,3 +20,6 @@
 /bin/
 .classpath
 .project
+src/people/generated/
+people-gen.xml
+src/people
