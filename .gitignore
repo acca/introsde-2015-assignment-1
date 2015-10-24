@@ -23,3 +23,5 @@
 src/people/generated/
 people-gen.xml
 src/people
+people-gen.json
+src/generated

@@ -200,7 +200,7 @@
 	
 	<target name="execute.JSONMarshaller">
 			<echo message="Executing JSONMarshaller" />
-			<java classname="people.JSONMarshaller" classpath="${build.dir}">
+			<java classname="people.HealthProfileJson" classpath="${build.dir}">
 				<classpath>
 					<fileset dir="${lib.dir}">
 						<include name="**/*.jar" />
