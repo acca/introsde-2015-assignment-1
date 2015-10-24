@@ -1,3 +1,23 @@
 * Implementation
-* What does what
+  With this application can be seen the differences between the parsing of an XML using manual techniques with the help of few libraries or using most sophisticated libraries and Java annotation to facilitate the process, in particular for the initial modeling of the objects.
+  
+  - The class *HealthProfileReader* expose methods that can be called with appropriate parameters and that do the conversion from to XML using XPATH expression.
+  - The classes *JAXBUnMarshaller*, *JAXBMarshaller* parses to and from XML/JAva object using the generated classes inside the people package, which have been generated thanks to JAXB.
+  - The class *HealthProfileJson* instead, uses the same classes inside the pojo package and an additional class *PersonStore* which permit to store a collection of Person object.
+  - Classes which generate XML or Json files, save them in the root folder of the project.
+  
 * Deployment
+  To run the application:
+  1) Clone the repository
+     #+BEGIN_EXAMPLE
+     git clone https://github.com/acca/introsde-2015-assignment-1.git
+     #+END_EXAMPLE
+  2) Enter in the project folder
+     #+BEGIN_EXAMPLE
+     cd introsde-2015-assignment-1
+     #+END_EXAMPLE
+  3) Run the evaluator script
+     #+BEGIN_EXAMPLE
+     ant execute.evaluate
+     #+END_EXAMPLE
+  4) One by one all the requested evaluation process will print the output
